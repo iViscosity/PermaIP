@@ -10,7 +10,6 @@ local function LogIP(ply, ip)
 end
 
 local function BanIP(ply, ip)
-	LogIP(ply, ip)
 	ULib.ban(ply, 0, "Attempt to circumvent permanent ban")
 end
 
