@@ -4,13 +4,13 @@
 
 local ip_cache = {}
 
-local function LogIP(ip)
+local function LogIP(ply, ip)
 	ip_cache[ip] = true
-	sql.Query("INSERT INTO ulib_ip_bans (ip) VALUES ('" .. ip .."')")
+	sql.Query("INSERT INTO ulib_ip_bans (ip, steamid) VALUES ('" .. ip .."', '" .. ply:SteamID64() .. "')")
 end
 
 local function BanIP(ply, ip)
-	LogIP(ip)
+	LogIP(ply, ip)
 	ULib.ban(ply, 0, "Attempt to circumvent permanent ban")
 end
 
@@ -34,5 +34,5 @@ end
 hook.Add("PlayerInitialSpawn", "CheckPlayerBanned_InitialSpawn", IsPlayerBanned)
 
 if not sql.TableExists("ulib_ip_bans") then
-	sql.Query("CREATE TABLE ulib_ip_bans (ip TEXT NOT NULL PRIMARY KEY, name TEXT)")
+	sql.Query("CREATE TABLE ulib_ip_bans (ip TEXT NOT NULL PRIMARY KEY, steamid TEXT)")
 end
